@@ -1,10 +1,16 @@
+import { useContext } from "react";
+import { TaskContext } from "./TaskContext";
+
 function TaskList(props) {
+  const { state, dispatch } = useContext(TaskContext);
+  const { tasks } = state;
+
   return (
     <ul>
-      {props.tasks.length === 0 ? (
-        <p>No Tasks</p>
+      {tasks.length === 0 ? (
+        <p>No tasks</p>
       ) : (
-        props.tasks.map((task, index) => {
+        tasks.map((task, index) => {
           return (
             <li
               key={index}
@@ -15,11 +21,17 @@ function TaskList(props) {
               <input
                 type="checkbox"
                 checked={task.completed}
-                onChange={() => props.handleToggleComplete(index)}
+                onChange={() =>
+                  dispatch({ type: "TOGGLE_TASK", payload: index })
+                }
               />
               {task.text}
               <div>
-                <button onClick={() => props.handleDeleteTask(index)}>
+                <button
+                  onClick={() =>
+                    dispatch({ type: "REMOVE_TASK", payload: index })
+                  }
+                >
                   Delete
                 </button>
               </div>
